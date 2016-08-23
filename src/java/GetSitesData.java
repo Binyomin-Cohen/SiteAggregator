@@ -47,12 +47,14 @@ public class GetSitesData extends HttpServlet {
        
        
        JSONObject bhJson = null;
-       List<String> items = new ArrayList<String>();
+       JSONArray bhItems = new JSONArray();
        try{
            bhJson = new JSONObject(bh);
            JSONArray itemsArray = bhJson.getJSONArray("items");
            for(int i = 0; i < itemsArray.length(); ++i){
-               items.add(itemsArray.getJSONObject(i).getString("shortDescription"));
+               bhItems.put(new JSONObject()
+                       .put("description", itemsArray.getJSONObject(i).getString("shortDescription"))
+                       .put("price", itemsArray.getJSONObject(i).getString("price")) );
            }
        }
        catch(Exception e){
@@ -60,37 +62,29 @@ public class GetSitesData extends HttpServlet {
        }
        
        JSONObject googleJson = null;
-       List<String> titles = new ArrayList<String>();
+       JSONArray titles = new JSONArray();
         try {
             googleJson = new JSONObject(googleTrends.substring(4));
             if(googleJson.has("storySummaries")){
                 JSONObject storySummaries = googleJson.getJSONObject("storySummaries");
                 JSONArray featuredStories = storySummaries.getJSONArray("featuredStories");
                 for(int i =0; i < featuredStories.length(); ++i){
-                    titles.add(featuredStories.getJSONObject(i).getString("title"));
+                    titles.put(featuredStories.getJSONObject(i).getString("title"));
                 }
             }
         } catch (JSONException ex) {
             
         }
-       response.setContentType("text/html;charset=UTF-8");
+        JSONObject aggregateJson = new JSONObject();
+        try{
+        aggregateJson.put("googleTrends", titles).put("bh", bhItems);
+        }
+        catch(Exception e){
+            System.out.println(e.toString());
+        }
+        response.setContentType("application/json;charset=UTF-8");
        try (PrintWriter out = response.getWriter()) {
-
-           out.println("<h1> Google Trends </h1>");
-            for(int i = 0; i < titles.size(); ++i){
-                out.println(titles.get(i));
-                out.println("<br>");
-            }
-            out.println("<br>");
-            out.println("<br>");
-            out.println("<br>");
-            out.println("<br>");
-            
-            out.println("<h1> B & H featured items </h1>");
-            for(int i = 0; i < items.size(); ++i){
-                out.println(items.get(i));
-                out.println("<br>");
-            }
+           out.print(aggregateJson);
         }
     }
     
