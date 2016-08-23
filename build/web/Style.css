@@ -1,9 +1,29 @@
+h1{
+    background-color: #333;
+    color:#DFCAA9;
+    text-align: center;
+}
+h3{
+    margin-top: 50px;
+}
 td{
     padding-bottom: 8px;
     padding-left: 20px;
 }
+
 body{
     font-family: sans-serif;
     line-height: 1.5;
+    width: 700px;
+    max-width: 100%;
+    margin:auto;
+}
+table{
+    background-color: #333;
+    color:lightgoldenrodyellow;
+    margin: auto;
+}
+.price{
+    color:lime;
 }
 

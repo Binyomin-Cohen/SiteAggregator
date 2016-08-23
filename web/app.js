@@ -35,6 +35,7 @@ var updateDom = function(response){
      var row = document.createElement("tr");
      var td1 = document.createElement("td");
      var td2 = document.createElement("td");
+     td2.className = "price";
      td1.innerHTML = bh[j].description;
      td2.innerHTML = bh[j].price;
      row.appendChild(td1);
