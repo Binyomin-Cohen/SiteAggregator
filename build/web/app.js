@@ -24,16 +24,22 @@ var updateDom = function(response){
   var bh = jResponse.bh;
   var googleList = document.getElementById("googleList");
   var bhList = document.getElementById("bhList");
+  
   for(var i = 0; i < titles.length; i++){
      var elem = document.createElement("li");
      elem.innerHTML = titles[i];
      googleList.appendChild(elem);
   }
-    for(var j = 0; j < titles.length; j++){
-     var elem = document.createElement("li");
-     var text = bh[j].description + "  -  $" + bh[j].price;
-     elem.innerHTML = text;
-     bhList.appendChild(elem);
+  
+  for(var j = 0; j < bh.length; j++){
+     var row = document.createElement("tr");
+     var td1 = document.createElement("td");
+     var td2 = document.createElement("td");
+     td1.innerHTML = bh[j].description;
+     td2.innerHTML = bh[j].price;
+     row.appendChild(td1);
+     row.appendChild(td2);
+     bhList.appendChild(row);
   }
 };
 
